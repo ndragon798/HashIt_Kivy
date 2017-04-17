@@ -1,0 +1,15 @@
+# Check configuration tokens
+# Ensure build layout
+# Check configuration tokens
+# Preparing build
+# Check requirements for android
+# Install platform
+# Apache ANT found at /home/nathan/.buildozer/android/platform/apache-ant-1.9.4
+# Android SDK found at /home/nathan/.buildozer/android/platform/android-sdk-20
+# Android NDK found at /home/nathan/.buildozer/android/platform/android-ndk-r9c
+# Check application requirements
+# Check garden requirements
+# Compile platform
+# Distribution already compiled, pass.
+# Build the application #52
+# Package the application
