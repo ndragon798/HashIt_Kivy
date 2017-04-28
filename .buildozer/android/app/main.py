@@ -14,8 +14,6 @@ import requests
 import urllib
 
 API_KEY = '96de2701aaf40a46f2b358255625c077ce823a71c52645f7d0385befe96e8855'
-#vt = VirusTotalPublicApi(API_KEY)
-
 
 class MyFileChooser(FileChooserListView):
 
@@ -33,6 +31,7 @@ class MainScreen(BoxLayout):
 
     def scan(self, instance):
         print("FPS: ", fps)
+        print(self.sha256hash)              
         params = {'apikey': API_KEY}
         files = {'file': (fps, open(fps, 'rb'))}
         response = requests.post(
@@ -43,23 +42,36 @@ class MainScreen(BoxLayout):
         except Exception as e:
             print(e)
             dlink = 'http://www.nathaneaston.com/'
-        print(dlink)
+            print(dlink)
         webbrowser.open(dlink)
 
     def genhash(self, instance):
         try:
             print(fp)
-            print(self.md5(fp))
-            print(self.sha1(fp))
-            print(self.sha256(fp))
-            self.lmd5.text = 'MD5: '+self.md5(fp)
-            self.lsha1.text = 'SHA1: '+self.sha1(fp)
-            self.lsha256.text = 'SHA256: '+self.sha256(fp)
+            self.md5hash = self.md5(fp)
+            self.sha1hash = self.sha1(fp)
+            self.sha256hash = self.sha256(fp)
+            print(self.md5hash)
+            print(self.sha1hash)
+            print(self.sha256hash)
+            self.lmd5.text = 'MD5: '+self.md5hash
+            self.lsha1.text = 'SHA1: '+self.sha1hash
+            self.lsha256.text = 'SHA256: '+self.sha256hash
             self.lsha256.font_size = (self.width/50)
             self.lsha1.font_size = (self.width/50)
             self.lmd5.font_size = (self.width/50)
             self.add_widget(self.btnupload)
-
+        except PermissionError as e:
+            box = BoxLayout(orientation='vertical')
+            closebutton=Button(text='Close')
+            box.add_widget(Label(text=str(e)))
+            box.add_widget(closebutton)
+            popup = Popup(content=box,size_hint=(.8,.8), auto_dismiss=False)
+            closebutton.bind(on_press=popup.dismiss)
+            # bind the on_press event of the button to the dismiss function
+            # open the popup
+            popup.open()
+            print("You don't have permissions for that file")
         except:
             print('fp not defined')
 
@@ -89,7 +101,7 @@ class MainScreen(BoxLayout):
         global popup
         popup = Popup(title='Select File',
                       content=MyFileChooser(),
-                      size_hint=(None, None), size=self.size)
+                      size_hint=(.8, .8), size=self.size)
         popup.open()
 
         try:
